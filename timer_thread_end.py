@@ -1,47 +1,42 @@
 import threading
 import time
 
-class TimerThread(threading.Thread):
-    def __init__(self, thread_id, timer, timeout_value):
+class Timer(threading.Thread):
+    def __init__(self, timeout_value):
         super().__init__()
-        self.thread_id = thread_id
-        self.timer = timer
         self.timeout_value = timeout_value
         self.timeout = False
+        self.thread = threading.Thread(target=self.run, args=(self.timeout_value))
 
-    def run(self):
+    def run(self, timeout_value):
         stime = time.time()
-        print("Thread {} -> Başladı.".format(self.thread_id))
+        print("Timer başladı. Zaman aşımı: {} saniye".format(timeout_value))
 
         while True:
             etime = time.time()
-            if etime - stime >= self.timer:
-                break
-            if etime - stime >= self.timeout_value:
+            if etime - stime >= timeout_value:
                 self.timeout = True
                 break
 
-        print("Thread {} -> Bitti. TimeOut: {}".format(self.thread_id, self.timeout))
-
-
-def sthread(threads):
-    for thread in threads:
-        thread.start()
-
-    for thread in threads:
-        thread.join()
+        print("Timer tamamlandı. Zaman aşımı: {}".format(timeout_value))
 
 if __name__ == "__main__":
-    thId_thsecond_timeout = [(1, 5,10), (2, 8, 9), (3, 10,5)]
+    timer1 = Timer(timeout_value=5)
+    timer2 = Timer(timeout_value=10)
+    timer3 = Timer(timeout_value=15)
 
-    listThread = []
-    for thread_id, timer, timeout_value in thId_thsecond_timeout:
-        thread = TimerThread(thread_id, timer, timeout_value)
-        listThread.append(thread)
+    timer_threads = [timer1.thread, timer2.thread, timer3.thread]
 
-    sthread(listThread)
-    print("Tüm threadler tamamlandı.")
+    for timer_thread in timer_threads:
+        timer_thread.start()
 
-    for thread in listThread:
-        if thread.timeout:
-            print("Thread {} TimeOut oldu.".format(thread.thread_id))
+    for timer_thread in timer_threads:
+        timer_thread.join()
+
+    if timer1.timeout:
+        print("Timer 1 -> Zaman aşımı")
+    if timer2.timeout:
+        print("Timer 2 -> Zaman aşımı")
+    if timer3.timeout:
+        print("Timer 3 -> Zaman aşımı")
+
