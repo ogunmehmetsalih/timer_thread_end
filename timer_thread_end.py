@@ -10,7 +10,7 @@ class Timer(threading.Thread):
 
     def run(self, timeout_value):
         stime = time.time()
-        print("Timer başladı. Zaman aşımı: {} saniye".format(timeout_value))
+        print("Timer runned. Timeout: {} second".format(timeout_value))
 
         while True:
             etime = time.time()
@@ -18,7 +18,7 @@ class Timer(threading.Thread):
                 self.timeout = True
                 break
 
-        print("Timer tamamlandı. Zaman aşımı: {}".format(timeout_value))
+        print("Timer Completed. Timeout: {}".format(timeout_value))
 
 if __name__ == "__main__":
     timer1 = Timer(timeout_value=5)
@@ -34,9 +34,9 @@ if __name__ == "__main__":
         timer_thread.join()
 
     if timer1.timeout:
-        print("Timer 1 -> Zaman aşımı")
+        print("Timer 1 -> Timeout")
     if timer2.timeout:
-        print("Timer 2 -> Zaman aşımı")
+        print("Timer 2 -> Timeout")
     if timer3.timeout:
-        print("Timer 3 -> Zaman aşımı")
+        print("Timer 3 -> Timeout")
 
