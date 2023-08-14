@@ -6,7 +6,7 @@ class Timer(threading.Thread):
         super().__init__()
         self.timeout_value = timeout_value
         self.timeout = False
-        self.thread = threading.Thread(target=self.run, args=(self.timeout_value))
+        self.thread = threading.Thread(target=self.run, args=(self.timeout_value,))
 
     def run(self, timeout_value):
         stime = time.time()
